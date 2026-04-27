@@ -1,0 +1,3 @@
+[submodule "cafe-headless-wp"]
+	path = cafe-headless-wp
+	url = /Users/keyvanmirani/Studio/cafeapi/wp-content/plugins/cafe-headless-menu
