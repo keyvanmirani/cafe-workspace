@@ -1,0 +1,19 @@
+meta {
+  name: Branches - List
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/branches
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+}

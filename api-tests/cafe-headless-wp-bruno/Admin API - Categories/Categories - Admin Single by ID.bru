@@ -1,0 +1,24 @@
+meta {
+  name: Categories - Admin Single by ID
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/{{categoryId}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+}

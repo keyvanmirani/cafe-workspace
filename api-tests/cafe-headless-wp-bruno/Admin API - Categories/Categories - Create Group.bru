@@ -1,0 +1,35 @@
+meta {
+  name: Categories - Create Group
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "name": "Bruno Group",
+  "slug": "bruno-group-{{$timestamp}}",
+  "parent_id": null,
+  "sort_order": 100
+}
+}
+
+tests {
+test('Status is 201', function() { expect(res.status).to.equal(201); });
+test('Created group has id', function() { expect(res.body.id).to.exist; bru.setVar('categoryGroupId', res.body.id); });
+}

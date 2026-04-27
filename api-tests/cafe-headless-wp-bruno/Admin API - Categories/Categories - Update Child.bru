@@ -1,0 +1,34 @@
+meta {
+  name: Categories - Update Child
+  type: http
+  seq: 14
+}
+
+put {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/{{childCategoryId}}
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "name": "Bruno Child Updated",
+  "slug": "{{categorySlug}}",
+  "parent_id": {{categoryParentId}},
+  "sort_order": 120
+}
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+}

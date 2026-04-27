@@ -1,0 +1,24 @@
+meta {
+  name: Branches - Admin List
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+}

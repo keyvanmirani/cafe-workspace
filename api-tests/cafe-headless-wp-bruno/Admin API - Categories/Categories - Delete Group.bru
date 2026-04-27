@@ -1,0 +1,24 @@
+meta {
+  name: Categories - Delete Group
+  type: http
+  seq: 18
+}
+
+delete {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/{{categoryGroupId}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+}

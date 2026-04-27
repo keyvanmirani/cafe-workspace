@@ -1,0 +1,24 @@
+meta {
+  name: Categories - Delete Group Blocked
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/{{categoryGroupId}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{wpUsername}}
+  password: {{wpAppPassword}}
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Delete group with child returns 409', function() { expect(res.status).to.equal(409); });
+}

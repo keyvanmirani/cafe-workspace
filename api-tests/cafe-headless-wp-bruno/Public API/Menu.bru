@@ -1,0 +1,20 @@
+meta {
+  name: Menu
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/menu?branch={{branchSlug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+test('Status is 200', function() { expect(res.status).to.equal(200); });
+test('Menu has categories array', function() { expect(res.body.categories).to.be.an('array'); });
+}
