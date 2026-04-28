@@ -37,3 +37,4 @@ wp-content/cache/
 
 # Bruno (keep collection, ignore local env secrets if needed)
 api-tests/**/.env
+api-tests/Cafe Headless WP API/environments/Local WordPress API.bru
