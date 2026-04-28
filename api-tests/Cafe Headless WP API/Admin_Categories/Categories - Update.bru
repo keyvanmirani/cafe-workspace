@@ -1,0 +1,221 @@
+meta {
+  name: Categories - Update
+  type: http
+  seq: 4
+  tags: [
+    Admin_Categories
+  ]
+}
+
+put {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+  body: json
+  auth: basic
+}
+
+params:path {
+  id: 1
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {
+  {
+    "name": "Bruno Child Updated",
+    "slug": "bruno-child-test",
+    "parent_id": 1,
+    "sort_order": 120
+  }
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: PUT
+    mode: json
+    params:path: {
+      id: 1
+    }
+  
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": 0,
+          "name": "",
+          "slug": "",
+          "sort_order": 0,
+          "group": {
+            "id": 0,
+            "slug": "",
+            "name": ""
+          },
+          "parent_id": 0,
+          "created_at": "",
+          "updated_at": ""
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 400 Response
+  description: Bad request
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: PUT
+    mode: json
+    params:path: {
+      id: 1
+    }
+  
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 401 Response
+  description: Unauthorized
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: PUT
+    mode: json
+    params:path: {
+      id: 1
+    }
+  
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 404 Response
+  description: Not found
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: PUT
+    mode: json
+    params:path: {
+      id: 1
+    }
+  
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 404
+      text: Not Found
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,81 @@
+meta {
+  name: Branches - Admin List
+  type: http
+  seq: 1
+  tags: [
+    Admin_Branches
+  ]
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/branches
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        []
+      '''
+    }
+  }
+}
+
+example {
+  name: 401 Response
+  description: Unauthorized
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/branches
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}

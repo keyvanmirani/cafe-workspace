@@ -1,0 +1,292 @@
+meta {
+  name: Categories - Create
+  type: http
+  seq: 2
+  tags: [
+    Admin_Categories
+  ]
+}
+
+post {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {
+  {
+    "name": "Bruno Group",
+    "slug": "bruno-group-test",
+    "parent_id": null,
+    "sort_order": 100
+  }
+}
+
+example {
+  name: 201 Response (Create Group)
+  description: Created
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Group",
+        "slug": "bruno-group-test",
+        "parent_id": null,
+        "sort_order": 100
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": 0,
+          "name": "",
+          "slug": "",
+          "sort_order": 0,
+          "group": {
+            "id": 0,
+            "slug": "",
+            "name": ""
+          },
+          "parent_id": 0,
+          "created_at": "",
+          "updated_at": ""
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 201 Response (Create Child)
+  description: Created
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Child",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 110
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": 0,
+          "name": "",
+          "slug": "",
+          "sort_order": 0,
+          "group": {
+            "id": 0,
+            "slug": "",
+            "name": ""
+          },
+          "parent_id": 0,
+          "created_at": "",
+          "updated_at": ""
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 400 Response (Create Group)
+  description: Bad request
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Group",
+        "slug": "bruno-group-test",
+        "parent_id": null,
+        "sort_order": 100
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 400 Response (Create Child)
+  description: Bad request
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Child",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 110
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 401 Response (Create Group)
+  description: Unauthorized
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Group",
+        "slug": "bruno-group-test",
+        "parent_id": null,
+        "sort_order": 100
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 401 Response (Create Child)
+  description: Unauthorized
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "name": "Bruno Child",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 110
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}

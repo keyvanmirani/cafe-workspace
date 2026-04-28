@@ -1,0 +1,50 @@
+meta {
+  name: Tiles
+  type: http
+  seq: 5
+  tags: [
+    Public
+  ]
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/tiles
+  body: none
+  auth: inherit
+}
+
+params:query {
+  branch: mehrvila
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/tiles
+    method: GET
+    mode: none
+    params:query: {
+      branch: mehrvila
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {}
+      '''
+    }
+  }
+}
