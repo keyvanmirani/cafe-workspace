@@ -1,7 +1,7 @@
 meta {
-  name: Categories - Create
+  name: Categories - Duplicate Slug on Create
   type: http
-  seq: 2
+  seq: 6
   tags: [
     Admin_Categories
   ]
@@ -21,7 +21,7 @@ auth:basic {
 body:json {
   {
     "name": "Bruno Group",
-    "slug": "bruno-group-test{{$timestamp}}",
+    "slug": "bruno-group-test",
     "parent_id": null,
     "sort_order": 100
   }

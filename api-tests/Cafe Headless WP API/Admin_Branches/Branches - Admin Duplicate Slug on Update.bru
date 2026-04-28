@@ -1,7 +1,7 @@
 meta {
-  name: Branches - Admin Update
+  name: Branches - Admin Duplicate Slug on Update
   type: http
-  seq: 4
+  seq: 5
   tags: [
     Admin_Branches
   ]
@@ -25,7 +25,7 @@ auth:basic {
 body:json {
   {
     "name": "Bruno Branch Updated",
-    "slug": "bruno-branch-test-{{$timestamp}}",
+    "slug": "bruno-branch-test",
     "address": "Bruno updated address",
     "phone": "02187654321",
     "map_url": "https://maps.google.com",
