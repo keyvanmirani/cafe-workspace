@@ -1,0 +1,21 @@
+meta {
+  name: Items - Admin Delete Blocked
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/items/17
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
