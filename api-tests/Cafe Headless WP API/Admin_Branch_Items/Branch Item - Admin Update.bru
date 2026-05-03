@@ -1,0 +1,30 @@
+meta {
+  name: Branch Item - Admin Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items/{{itemId}}
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {
+  {
+    "is_available": true,
+    "price_override_raw": "140",
+    "sale_price_override_raw": null,
+    "sort_order": 90
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,86 @@
+meta {
+  name: Branches - With item
+  type: http
+  seq: 6
+  tags: [
+    Public
+  ]
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/menu?branch={{branchSlug}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  branch: {{branchSlug}}
+}
+
+example {
+  name: 200 Response
+  description: OK
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/branches/:slug
+    method: GET
+    mode: none
+    params:path: {
+      slug: mehrvila
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {}
+      '''
+    }
+  }
+}
+
+example {
+  name: 404 Response
+  description: Not found
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/branches/:slug
+    method: GET
+    mode: none
+    params:path: {
+      slug: mehrvila
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 404
+      text: Not Found
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
