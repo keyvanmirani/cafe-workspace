@@ -3,7 +3,7 @@ meta {
   type: http
   seq: 6
   tags: [
-    Admin_Categories
+    Legacy_Admin_Categories
   ]
 }
 
@@ -30,7 +30,7 @@ body:json {
 example {
   name: 201 Response (Create Group)
   description: Created
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -44,17 +44,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 201
       text: Created
     }
-  
+
     body: {
       type: json
       content: '''
@@ -80,7 +80,7 @@ example {
 example {
   name: 201 Response (Create Child)
   description: Created
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -94,17 +94,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 201
       text: Created
     }
-  
+
     body: {
       type: json
       content: '''
@@ -130,7 +130,7 @@ example {
 example {
   name: 400 Response (Create Group)
   description: Bad request
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -144,17 +144,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 400
       text: Bad Request
     }
-  
+
     body: {
       type: json
       content: '''
@@ -171,7 +171,7 @@ example {
 example {
   name: 400 Response (Create Child)
   description: Bad request
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -185,17 +185,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 400
       text: Bad Request
     }
-  
+
     body: {
       type: json
       content: '''
@@ -212,7 +212,7 @@ example {
 example {
   name: 401 Response (Create Group)
   description: Unauthorized
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -226,17 +226,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 401
       text: Unauthorized
     }
-  
+
     body: {
       type: json
       content: '''
@@ -253,7 +253,7 @@ example {
 example {
   name: 401 Response (Create Child)
   description: Unauthorized
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories
     method: POST
@@ -267,17 +267,17 @@ example {
       }
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 401
       text: Unauthorized
     }
-  
+
     body: {
       type: json
       content: '''

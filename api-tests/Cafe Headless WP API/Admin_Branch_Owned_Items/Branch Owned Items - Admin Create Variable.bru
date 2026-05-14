@@ -1,0 +1,37 @@
+meta {
+  name: Branch Owned Items - Admin Create Variable
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {
+  {
+    "category_id": {{categoryId}},
+    "name": "Branch Smoke Variable Item",
+    "description": "Created by branch-first smoke validation",
+    "image": "",
+    "price_raw": null,
+    "sale_price_raw": null,
+    "is_variable": true,
+    "is_active": true,
+    "sort_order": 30,
+    "ingredients": [],
+    "data": {}
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

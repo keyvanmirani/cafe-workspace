@@ -1,0 +1,21 @@
+meta {
+  name: Branch Owned Items - Admin Delete
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items/{{itemId}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

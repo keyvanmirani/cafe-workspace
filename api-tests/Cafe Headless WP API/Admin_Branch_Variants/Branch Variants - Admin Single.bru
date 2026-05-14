@@ -1,0 +1,21 @@
+meta {
+  name: Branch Variants - Admin Single
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items/{{itemId}}/variants/{{variantId}}
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,15 +1,15 @@
 meta {
-  name: Categories - Delete Blocked
+  name: Categories - Update
   type: http
-  seq: 8
+  seq: 4
   tags: [
-    Admin_Categories
+    Legacy_Admin_Categories
   ]
 }
 
-delete {
+put {
   url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-  body: none
+  body: json
   auth: basic
 }
 
@@ -22,36 +22,108 @@ auth:basic {
   password: {{password}}
 }
 
+body:json {
+  {
+    "name": "Bruno Child Updated",
+    "slug": "bruno-child-test",
+    "parent_id": null,
+    "sort_order": 120
+  }
+}
+
 example {
   name: 200 Response
-  description: Deleted
-  
+  description: OK
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: DELETE
-    mode: none
+    method: PUT
+    mode: json
     params:path: {
       id: 1
     }
+
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 200
       text: OK
     }
-  
+
     body: {
       type: json
       content: '''
         {
-          "status": "",
-          "deleted": false,
-          "id": 0
+          "id": 0,
+          "name": "",
+          "slug": "",
+          "sort_order": 0,
+          "group": {
+            "id": 0,
+            "slug": "",
+            "name": ""
+          },
+          "parent_id": 0,
+          "created_at": "",
+          "updated_at": ""
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 400 Response
+  description: Bad request
+
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: PUT
+    mode: json
+    params:path: {
+      id: 1
+    }
+
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
+  }
+
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
         }
       '''
     }
@@ -61,26 +133,35 @@ example {
 example {
   name: 401 Response
   description: Unauthorized
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: DELETE
-    mode: none
+    method: PUT
+    mode: json
     params:path: {
       id: 1
     }
+
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 401
       text: Unauthorized
     }
-  
+
     body: {
       type: json
       content: '''
@@ -97,62 +178,35 @@ example {
 example {
   name: 404 Response
   description: Not found
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: DELETE
-    mode: none
+    method: PUT
+    mode: json
     params:path: {
       id: 1
     }
+
+    body:json: {
+      {
+        "name": "Bruno Child Updated",
+        "slug": "bruno-child-test",
+        "parent_id": 1,
+        "sort_order": 120
+      }
+    }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 404
       text: Not Found
     }
-  
-    body: {
-      type: json
-      content: '''
-        {
-          "code": "",
-          "message": "",
-          "data": {}
-        }
-      '''
-    }
-  }
-}
 
-example {
-  name: 409 Response
-  description: Delete blocked
-  
-  request: {
-    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: DELETE
-    mode: none
-    params:path: {
-      id: 1
-    }
-  }
-  
-  response: {
-    headers: {
-      Content-Type: application/json
-    }
-  
-    status: {
-      code: 409
-      text: Conflict
-    }
-  
     body: {
       type: json
       content: '''

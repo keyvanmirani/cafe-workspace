@@ -1,13 +1,13 @@
 meta {
-  name: Categories - Admin Single by ID
+  name: Categories - Delete Blocked
   type: http
-  seq: 3
+  seq: 8
   tags: [
-    Admin_Categories
+    Legacy_Admin_Categories
   ]
 }
 
-get {
+delete {
   url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
   body: none
   auth: basic
@@ -24,43 +24,34 @@ auth:basic {
 
 example {
   name: 200 Response
-  description: OK
-  
+  description: Deleted
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: GET
+    method: DELETE
     mode: none
     params:path: {
       id: 1
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 200
       text: OK
     }
-  
+
     body: {
       type: json
       content: '''
         {
-          "id": 0,
-          "name": "",
-          "slug": "",
-          "sort_order": 0,
-          "group": {
-            "id": 0,
-            "slug": "",
-            "name": ""
-          },
-          "parent_id": 0,
-          "created_at": "",
-          "updated_at": ""
+          "status": "",
+          "deleted": false,
+          "id": 0
         }
       '''
     }
@@ -70,26 +61,26 @@ example {
 example {
   name: 401 Response
   description: Unauthorized
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: GET
+    method: DELETE
     mode: none
     params:path: {
       id: 1
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 401
       text: Unauthorized
     }
-  
+
     body: {
       type: json
       content: '''
@@ -106,26 +97,62 @@ example {
 example {
   name: 404 Response
   description: Not found
-  
+
   request: {
     url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
-    method: GET
+    method: DELETE
     mode: none
     params:path: {
       id: 1
     }
   }
-  
+
   response: {
     headers: {
       Content-Type: application/json
     }
-  
+
     status: {
       code: 404
       text: Not Found
     }
-  
+
+    body: {
+      type: json
+      content: '''
+        {
+          "code": "",
+          "message": "",
+          "data": {}
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: 409 Response
+  description: Delete blocked
+
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/categories/:id
+    method: DELETE
+    mode: none
+    params:path: {
+      id: 1
+    }
+  }
+
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+
+    status: {
+      code: 409
+      text: Conflict
+    }
+
     body: {
       type: json
       content: '''

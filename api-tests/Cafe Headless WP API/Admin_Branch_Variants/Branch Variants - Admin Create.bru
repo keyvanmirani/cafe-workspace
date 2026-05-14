@@ -1,0 +1,33 @@
+meta {
+  name: Branch Variants - Admin Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items/{{itemId}}/variants
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+body:json {
+  {
+    "name": "Branch Smoke Variant",
+    "description": "",
+    "image": "",
+    "price_raw": "100000",
+    "is_active": true,
+    "sort_order": 10,
+    "data": {}
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

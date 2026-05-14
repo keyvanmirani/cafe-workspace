@@ -1,27 +1,18 @@
 meta {
-  name: Branch Item - Admin Update
+  name: Branch Owned Items - Admin Single
   type: http
-  seq: 2
+  seq: 4
 }
 
-put {
+get {
   url: {{baseUrl}}/wp-json/cafe/v1/admin/branches/{{branchId}}/items/{{itemId}}
-  body: json
+  body: none
   auth: basic
 }
 
 auth:basic {
   username: {{username}}
   password: {{password}}
-}
-
-body:json {
-  {
-    "is_available": true,
-    "price_override_raw": "140",
-    "sale_price_override_raw": null,
-    "sort_order": 90
-  }
 }
 
 settings {
