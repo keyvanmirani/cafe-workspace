@@ -1,9 +1,9 @@
 meta {
-  name: Tiles
+  name: Public Tiles - Branch Owned Read
   type: http
-  seq: 5
+  seq: 2
   tags: [
-    Public
+    Public_Menu
   ]
 }
 
@@ -14,7 +14,7 @@ get {
 }
 
 params:query {
-  branch: mehrvila
+  branch: {{branchSlug}}
 }
 
 example {
@@ -26,7 +26,7 @@ example {
     method: GET
     mode: none
     params:query: {
-      branch: mehrvila
+      branch: {{branchSlug}}
     }
   }
   

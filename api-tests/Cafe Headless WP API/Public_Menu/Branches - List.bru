@@ -1,14 +1,14 @@
 meta {
-  name: Health
+  name: Branches - List
   type: http
-  seq: 1
+  seq: 3
   tags: [
-    Public
+    Public_Menu
   ]
 }
 
 get {
-  url: {{baseUrl}}/wp-json/cafe/v1/health
+  url: {{baseUrl}}/wp-json/cafe/v1/branches
   body: none
   auth: inherit
 }
@@ -18,7 +18,7 @@ example {
   description: OK
   
   request: {
-    url: {{baseUrl}}/wp-json/cafe/v1/health
+    url: {{baseUrl}}/wp-json/cafe/v1/branches
     method: GET
     mode: none
   }

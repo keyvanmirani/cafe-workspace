@@ -1,16 +1,20 @@
 meta {
-  name: Branches - List
+  name: Public Menu - Branch Owned Read
   type: http
-  seq: 2
+  seq: 1
   tags: [
-    Public
+    Public_Menu
   ]
 }
 
 get {
-  url: {{baseUrl}}/wp-json/cafe/v1/branches
+  url: {{baseUrl}}/wp-json/cafe/v1/menu
   body: none
   auth: inherit
+}
+
+params:query {
+  branch: {{branchSlug}}
 }
 
 example {
@@ -18,9 +22,12 @@ example {
   description: OK
   
   request: {
-    url: {{baseUrl}}/wp-json/cafe/v1/branches
+    url: {{baseUrl}}/wp-json/cafe/v1/menu
     method: GET
     mode: none
+    params:query: {
+      branch: {{branchSlug}}
+    }
   }
   
   response: {

@@ -1,20 +1,16 @@
 meta {
-  name: Menu
+  name: Health
   type: http
-  seq: 4
+  seq: 1
   tags: [
-    Public
+    Migration_And_Status
   ]
 }
 
 get {
-  url: {{baseUrl}}/wp-json/cafe/v1/menu
+  url: {{baseUrl}}/wp-json/cafe/v1/health
   body: none
   auth: inherit
-}
-
-params:query {
-  branch: mehrvila
 }
 
 example {
@@ -22,12 +18,9 @@ example {
   description: OK
   
   request: {
-    url: {{baseUrl}}/wp-json/cafe/v1/menu
+    url: {{baseUrl}}/wp-json/cafe/v1/health
     method: GET
     mode: none
-    params:query: {
-      branch: mehrvila
-    }
   }
   
   response: {

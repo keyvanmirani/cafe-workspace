@@ -7,7 +7,7 @@ Scope: Bruno regression coverage for the current `/wp-json/cafe/v1` behavior bef
 - Collection: `Cafe Headless WP API`
 - Base URL variable: `{{baseUrl}}`
 - Admin auth variables: use the environment's admin Application Password credentials.
-- Dynamic IDs should be captured from create responses and reused in follow-up requests: `groupCategoryId`, `childCategoryId`, `itemId`, `variantId`, `branchId`, and `branchSlug`.
+- Dynamic IDs should be captured from create responses and reused in follow-up requests: `categoryId`, `itemId`, `variantId`, `branchId`, and `branchSlug`.
 - Negative auth should be run with three environment/auth variants where available: no auth, invalid Application Password, and authenticated user without `manage_options`.
 
 ## Public Regression Scenarios
@@ -30,7 +30,7 @@ Scope: Bruno regression coverage for the current `/wp-json/cafe/v1` behavior bef
 
 - Request: `GET {{baseUrl}}/wp-json/cafe/v1/menu?branch={{branchSlug}}`
 - Expected success contract: wrapped response with `status`, `api_version`, `generated_at`, and `categories`.
-- Assert branch overrides are reflected for the requested branch.
+- Assert branch-owned categories/items/variants are reflected for the requested branch.
 - Missing or inactive branch fixtures should be documented separately because current public behavior depends on stored branch state.
 
 ### `GET /tiles`
@@ -65,7 +65,7 @@ Run the same auth-negative expectations across every admin route group:
 
 - Categories: `/admin/categories`, `/admin/categories/{id}`
 - Branches: `/admin/branches`, `/admin/branches/{id}`
-- Branch item overrides: `/admin/branches/{branch_id}/items`, `/admin/branches/{branch_id}/items/{item_id}`
+- Branch-owned items: `/admin/branches/{branch_id}/items`, `/admin/branches/{branch_id}/items/{item_id}`
 - Items: `/admin/items`, `/admin/items/{id}`
 - Variants: `/admin/items/{item_id}/variants`, `/admin/items/{item_id}/variants/{variant_id}`
 - Seed: `/seed`
@@ -126,19 +126,20 @@ Expected auth-negative cases:
 - `DELETE /admin/items/{item_id}/variants/{variant_id}`: partial status response with `status` and `deleted`; no `api_version` or `generated_at`.
 - Regression cases: reject variants for fixed items, require name and price/price_raw, delete before deleting variable parent item.
 
-## Admin Branch Item Overrides
+## Admin Branch-Owned Items
 
 - `GET /admin/branches/{branch_id}/items`: wrapped response with `status`, `api_version`, `generated_at`, and `items`.
-- `POST/PUT/PATCH /admin/branches/{branch_id}/items/{item_id}`: wrapped response with `status`, `api_version`, `generated_at`, and `item`.
-- Body fields: `is_available` as strict boolean, `price_override_raw` as string or null, `sale_price_override_raw` as string or null, `sort_order` as strict integer.
+- `POST /admin/branches/{branch_id}/items`: creates a branch-owned item.
+- `GET/PUT/PATCH/DELETE /admin/branches/{branch_id}/items/{item_id}`: reads, updates, or deletes a branch-owned item.
+- Body fields follow the branch-owned item CRUD contract: `category_id`, `name`, `description`, `image`, `price_raw`, `sale_price_raw`, `is_variable`, `is_active`, `sort_order`, `ingredients`, and `data`.
 
-Expected public branch-menu assertions after override updates:
+Expected public branch-menu assertions after branch-owned CRUD:
 
-- `is_available: false` hides the item from `GET /menu?branch={{branchSlug}}`.
-- `price_override_raw` changes the public item price for that branch.
-- `sale_price_override_raw` changes the public sale price for that branch.
+- Active branch-owned items appear in `GET /menu?branch={{branchSlug}}`.
+- Inactive branch-owned items stay hidden from `GET /menu?branch={{branchSlug}}`.
+- `price_raw` and `sale_price_raw` drive branch menu pricing for that branch-owned item.
 - `sort_order` changes branch menu ordering.
-- Reset overrides before cleanup when later delete requests depend on fixture visibility.
+- Clean up branch-owned variants before deleting variable branch-owned items.
 
 ## Seed Endpoint
 
@@ -152,21 +153,19 @@ Expected public branch-menu assertions after override updates:
 
 Recommended end-to-end order:
 
-1. Create group category; capture `groupCategoryId`.
-2. Create child category under `groupCategoryId`; capture `childCategoryId`.
-3. Create a variable item in `childCategoryId`; capture `itemId`.
-4. Create a variant for `itemId`; capture `variantId`.
-5. Create an active branch; capture `branchId` and `branchSlug`.
-6. Update branch item override for `branchId` and `itemId`.
-7. Verify `GET /menu?branch={{branchSlug}}` reflects availability, price override, sale price override, and sort order.
-8. Verify `GET /tiles?branch={{branchSlug}}` remains consistent with branch menu filtering.
-9. Cleanup in reverse order where possible: delete variant, delete item, delete child category, delete group category. Branch delete is not currently in the audited route inventory, so created branch cleanup may require fixture reset or database cleanup outside the runtime API.
+1. Create or select an active branch; capture `branchId` and `branchSlug`.
+2. Create a branch-owned category for `branchId`; capture `categoryId`.
+3. Create a variable branch-owned item in `categoryId`; capture `itemId`.
+4. Create a branch-owned variant for `itemId`; capture `variantId`.
+5. Verify `GET /menu?branch={{branchSlug}}` reflects branch-owned availability, pricing, and sort order.
+6. Verify `GET /tiles?branch={{branchSlug}}` remains consistent with branch menu filtering.
+7. Cleanup in reverse order where possible: delete variant, delete item, delete category. Branch delete is not currently in the audited route inventory, so created branch cleanup may require fixture reset or database cleanup outside the runtime API.
 
 ## Response Shape Lock
 
 Current expected shapes to preserve during Phase 0:
 
-- Fully wrapped: public `/menu`, `/tiles`, `/branches`, `/branches/{slug}`; admin item list/create; admin variant list/create; admin branch item list/update.
+- Fully wrapped: public `/menu`, `/tiles`, `/branches`, `/branches/{slug}`; admin item list/create; admin variant list/create; admin branch-owned item list/create/update; admin branch-owned variant list/create/update.
 - Health special case: `GET /health` has `status` and `api_version` but intentionally omits `generated_at`.
 - Raw admin arrays/objects: admin categories list/read/update; admin branch create/read/update; admin item read/update; admin variant update.
 - Delete partials: category, item, and variant delete responses include `status` and `deleted` but omit `api_version` and `generated_at`.

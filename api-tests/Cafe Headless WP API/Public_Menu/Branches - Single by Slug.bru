@@ -1,20 +1,20 @@
 meta {
-  name: Branches - With item
+  name: Branches - Single by Slug
   type: http
-  seq: 6
+  seq: 4
   tags: [
-    Public
+    Public_Menu
   ]
 }
 
 get {
-  url: {{baseUrl}}/wp-json/cafe/v1/menu?branch={{branchSlug}}
+  url: {{baseUrl}}/wp-json/cafe/v1/branches/:slug
   body: none
   auth: inherit
 }
 
-params:query {
-  branch: {{branchSlug}}
+params:path {
+  slug: {{branchSlug}}
 }
 
 example {
@@ -26,7 +26,7 @@ example {
     method: GET
     mode: none
     params:path: {
-      slug: mehrvila
+      slug: {{branchSlug}}
     }
   }
   
@@ -58,7 +58,7 @@ example {
     method: GET
     mode: none
     params:path: {
-      slug: mehrvila
+      slug: inactive-or-missing-branch
     }
   }
   

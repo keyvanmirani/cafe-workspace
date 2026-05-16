@@ -1,0 +1,56 @@
+meta {
+  name: Branch First Status
+  type: http
+  seq: 2
+  tags: [
+    Migration_And_Status
+  ]
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branch-first-status
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+example {
+  name: 200 Response
+  description: Branch-first status report
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/branch-first-status
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": "ok",
+          "branch_first_status": {}
+        }
+      '''
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

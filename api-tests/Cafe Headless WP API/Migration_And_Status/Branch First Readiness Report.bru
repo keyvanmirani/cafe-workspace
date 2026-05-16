@@ -1,0 +1,56 @@
+meta {
+  name: Branch First Readiness Report
+  type: http
+  seq: 3
+  tags: [
+    Migration_And_Status
+  ]
+}
+
+get {
+  url: {{baseUrl}}/wp-json/cafe/v1/admin/branch-first-readiness-report
+  body: none
+  auth: basic
+}
+
+auth:basic {
+  username: {{username}}
+  password: {{password}}
+}
+
+example {
+  name: 200 Response
+  description: Branch-owned public-read readiness report
+  
+  request: {
+    url: {{baseUrl}}/wp-json/cafe/v1/admin/branch-first-readiness-report
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "status": "ok",
+          "report": {}
+        }
+      '''
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
