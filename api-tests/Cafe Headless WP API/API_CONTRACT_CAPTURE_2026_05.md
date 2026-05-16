@@ -1,6 +1,6 @@
 # Cafe Headless WP API Contract Capture - 2026-05
 
-Scope: Bruno regression coverage for the current `/wp-json/cafe/v1` behavior before PHP cleanup/refactor. These notes intentionally lock the mixed response shapes documented in `BACKEND_AUDIT_2026_05.md`; do not normalize expectations until Nuxt/client compatibility is coordinated.
+Scope: Bruno regression coverage for the current `/wp-json/cafe/v1` v1.5 release-candidate behavior after branch-first stabilization and Bruno cleanup. These notes lock the current branch-first public/admin smoke expectations; do not normalize or redesign backend contracts as part of the release-candidate pass.
 
 ## Bruno Execution Notes
 
@@ -76,54 +76,54 @@ Expected auth-negative cases:
 - Invalid Application Password: request should not succeed; assert WordPress REST error shape with `code`, `message`, and `data.status`.
 - Authenticated user without `manage_options`, if available: request should not succeed; assert forbidden status and WordPress REST error shape.
 
-## Admin Categories CRUD
+## Legacy Admin Categories CRUD
 
 ### Create Group Category
 
 - Request: `POST {{baseUrl}}/wp-json/cafe/v1/admin/categories`
 - Body: `name`, unique `slug`, `parent_id: null`, `sort_order`.
-- Expected success contract: raw category object returned through direct `WP_REST_Response`; HTTP `201`; no `status`, `api_version`, or `generated_at`.
+- Expected success contract: normalized response with `status`, `api_version`, `generated_at`, and `category`; HTTP `201`.
 - Capture `id` as `groupCategoryId`.
 
 ### Create Child Category
 
 - Request: `POST {{baseUrl}}/wp-json/cafe/v1/admin/categories`
 - Body: `name`, unique `slug`, `parent_id: {{groupCategoryId}}`, `sort_order`.
-- Expected success contract: raw category object; HTTP `201`; no wrapper metadata.
+- Expected success contract: normalized response with `status`, `api_version`, `generated_at`, and `category`; HTTP `201`.
 - Capture `id` as `childCategoryId`.
 
 ### List, Read, Update, Delete
 
-- `GET /admin/categories`: raw array; empty list is `[]`; no wrapper metadata.
-- `GET /admin/categories/{id}`: raw category object; no wrapper metadata.
-- `PUT/PATCH/POST /admin/categories/{id}`: raw category object; no wrapper metadata.
-- `DELETE /admin/categories/{id}`: partial status response with `status` and `deleted`; no `api_version` or `generated_at`.
+- `GET /admin/categories`: normalized response with `categories`; empty list is `categories: []`.
+- `GET /admin/categories/{id}`: normalized response with `category`.
+- `PUT/PATCH/POST /admin/categories/{id}`: normalized response with `category`.
+- `DELETE /admin/categories/{id}`: normalized response preserving delete internals such as `deleted` and IDs.
 - Regression cases: duplicate slug on create/update, self-parent update rejection, blocked delete while children/items exist, successful delete after dependencies are removed.
 
 ## Admin Branches CRUD
 
 - `GET /admin/branches`: currently reuses public list; wrapped response with `status`, `api_version`, `generated_at`, and `branches`; inactive branches are omitted.
-- `POST /admin/branches`: raw branch object through direct `WP_REST_Response`; HTTP `201`; no wrapper metadata. Capture `id` as `branchId` and `slug` as `branchSlug`.
-- `GET /admin/branches/{id}`: raw branch object; no wrapper metadata.
-- `PUT /admin/branches/{id}`: raw branch object; no wrapper metadata.
+- `POST /admin/branches`: normalized response with `branch`; HTTP `201`. Capture `id` as `branchId` and `slug` as `branchSlug`.
+- `GET /admin/branches/{id}`: normalized response with `branch`.
+- `PUT /admin/branches/{id}`: normalized response with `branch`.
 - Regression cases: required `name` and `slug`, duplicate slug, boolean-ish `is_active`, and sort order coercion.
 
-## Admin Items CRUD
+## Legacy Admin Items CRUD
 
 - `GET /admin/items`: wrapped response with `status`, `api_version`, `generated_at`, and `items`.
 - `POST /admin/items`: wrapped response with `status`, `api_version`, `generated_at`, and `item`; HTTP `201`. Capture `id` as `itemId`.
-- `GET /admin/items/{id}`: raw item object; no wrapper metadata.
-- `PUT /admin/items/{id}`: raw item object; no wrapper metadata.
-- `DELETE /admin/items/{id}`: partial status response with `status` and `deleted`; no `api_version` or `generated_at`.
+- `GET /admin/items/{id}`: normalized response with `item`.
+- `PUT /admin/items/{id}`: normalized response with `item`.
+- `DELETE /admin/items/{id}`: normalized response preserving delete internals such as `deleted` and IDs.
 - Regression cases: fixed item requires price, variable item may be created for variant flow, blocked delete while variants exist, active item attaches to active branches.
 
-## Admin Variants CRUD
+## Legacy Admin Variants CRUD
 
 - Parent item must exist and be variable.
 - `GET /admin/items/{item_id}/variants`: wrapped response with `status`, `api_version`, `generated_at`, and `variants`.
 - `POST /admin/items/{item_id}/variants`: wrapped response with `status`, `api_version`, `generated_at`, and `variant`; HTTP `201`. Capture `id` as `variantId`.
-- `PUT /admin/items/{item_id}/variants/{variant_id}`: raw variant object; no wrapper metadata.
-- `DELETE /admin/items/{item_id}/variants/{variant_id}`: partial status response with `status` and `deleted`; no `api_version` or `generated_at`.
+- `PUT /admin/items/{item_id}/variants/{variant_id}`: normalized response with `variant`.
+- `DELETE /admin/items/{item_id}/variants/{variant_id}`: normalized response preserving delete internals such as `deleted` and IDs.
 - Regression cases: reject variants for fixed items, require name and price/price_raw, delete before deleting variable parent item.
 
 ## Admin Branch-Owned Items
@@ -163,10 +163,10 @@ Recommended end-to-end order:
 
 ## Response Shape Lock
 
-Current expected shapes to preserve during Phase 0:
+Current expected shapes to preserve for the v1.5 release candidate:
 
-- Fully wrapped: public `/menu`, `/tiles`, `/branches`, `/branches/{slug}`; admin item list/create; admin variant list/create; admin branch-owned item list/create/update; admin branch-owned variant list/create/update.
+- Fully wrapped success responses: public `/menu`, `/tiles`, `/branches`, `/branches/{slug}`; admin branches; legacy admin categories/items/variants; branch-owned categories/items/variants; migration/status reads.
 - Health special case: `GET /health` has `status` and `api_version` but intentionally omits `generated_at`.
-- Raw admin arrays/objects: admin categories list/read/update; admin branch create/read/update; admin item read/update; admin variant update.
-- Delete partials: category, item, and variant delete responses include `status` and `deleted` but omit `api_version` and `generated_at`.
+- Native WordPress errors: auth, validation, lookup, and many database failures remain `WP_Error` shapes with `code`, `message`, and `data.status`.
+- Delete responses: preserve legacy delete internals such as `deleted` and related IDs inside the normalized success envelope.
 - Seed direct response: seed counters/errors are not wrapped in the versioned response envelope.
