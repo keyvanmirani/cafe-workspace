@@ -1,17 +1,15 @@
-	[submodule "cafe-headless-wp"]
-
-	path = cafe-headless-wp
-	url = git@github.com:keyvanmirani/cafe-headless-wp.git
-
-[submodule "cafe-admin"]
-
-	path = cafe-admin
+[submodule "apps/cafe-admin"]
+	path = apps/cafe-admin
 	url = git@github.com:keyvanmirani/cafe-admin-front.git
 
-[submodule "cafe-public"]
-
-	path = cafe-public
-	url = git@github.com:keyvanmirani/cafe-farda-v4-front.git
-[submodule "cafe-api-bruno"]
-	path = cafe-api-bruno
+[submodule "tools/cafe-api-bruno"]
+	path = tools/cafe-api-bruno
 	url = git@github.com:keyvanmirani/cafe-api-bruno.git
+
+[submodule "apps/cafe-headless-wp"]
+	path = apps/cafe-headless-wp
+	url = git@github.com:keyvanmirani/cafe-headless-wp.git
+
+[submodule "apps/cafe-public"]
+	path = apps/cafe-public
+	url = git@github.com:keyvanmirani/cafe-farda-v4-front.git
