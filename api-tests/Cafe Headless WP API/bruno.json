@@ -1,9 +1,0 @@
-{
-  "version": "1",
-  "name": "Cafe Headless WP API",
-  "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
-}

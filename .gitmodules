@@ -12,3 +12,6 @@
 
 	path = cafe-public
 	url = git@github.com:keyvanmirani/cafe-farda-v4-front.git
+[submodule "cafe-api-bruno"]
+	path = cafe-api-bruno
+	url = git@github.com:keyvanmirani/cafe-api-bruno.git
