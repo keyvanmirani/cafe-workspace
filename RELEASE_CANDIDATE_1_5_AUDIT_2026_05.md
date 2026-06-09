@@ -35,7 +35,6 @@ Public branch reads prefer branch-owned rows when present. Branches without bran
 
 ## Current Known Limitations
 
-- `POST /seed` remains a legacy direct response surface and broad write operation.
 - Native `WP_Error` responses keep WordPress error shape instead of the success envelope.
 - Admin branch list remains active-branch oriented.
 - Legacy/global admin pages remain available for audit and rollback comparison.
@@ -93,7 +92,7 @@ Quality commands:
 - If branch-owned public rendering exposes a branch-specific issue, remove or quarantine that branch's branch-owned rows only after confirming legacy fallback behavior.
 - Admin branch workspace can be rolled back at the frontend routing/import level because legacy global admin pages still exist.
 - Backend rollback should preserve response contracts and avoid schema cleanup until a dedicated post-v1.5 removal phase.
-- Seed/backfill/repair endpoints are high-impact and should be used only against known fixtures or with a database backup.
+- Backfill/repair operations are high-impact and should be used only against known fixtures or with a database backup.
 
 ## Known Issues / Deferred Items
 

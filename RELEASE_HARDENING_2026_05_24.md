@@ -171,12 +171,11 @@ Fresh install:
 - Activate the WordPress plugin on a disposable or staging WordPress instance.
 - Confirm `/wp-json/cafe/v1/health` is HTTP 200.
 
-DB reset/reseed:
+DB reset:
 
 - Take a database backup first.
 - Reset only a disposable or approved staging database.
-- Run the branch-first seed endpoint or documented seed operation.
-- Confirm branches, branch-owned categories, branch-owned items, and variants exist.
+- Enter or verify branches, branch-owned categories, branch-owned items, and variants through the admin workflow.
 
 Branch-first schema validation:
 
@@ -236,7 +235,7 @@ Known remaining risks:
 1. Freeze feature work.
 2. Refresh all branches from origin.
 3. Run backend source tests.
-4. Reset/reseed disposable WordPress.
+4. Reset disposable WordPress and verify admin-entered branch menu data.
 5. Run backend live integration smoke.
 6. Run admin frontend CI commands.
 7. Run public frontend CI commands, including smoke and axe.
