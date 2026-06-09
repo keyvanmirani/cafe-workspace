@@ -145,7 +145,7 @@ Protect `main` in each app repository and in `cafe-workspace`:
 - Create a GitHub Release for each stable tag with:
   - app commit SHA
   - workspace submodule SHA
-  - database migration notes
+  - database preparation notes
   - smoke validation result
   - rollback note
 
@@ -202,7 +202,7 @@ Rollback basics:
 - Keep the previous plugin package and frontend deployment artifacts.
 - Keep the pre-release database backup.
 - Roll back frontend deployments first if the issue is display-only.
-- Roll back the plugin only after confirming database compatibility.
+- Roll back the plugin only after confirming the target database state.
 - Do not delete branch-owned data during rollback unless a restore plan has been approved.
 
 Required environment variables:
@@ -220,7 +220,7 @@ Known remaining risks:
 - Live integration smoke requires a disposable WordPress instance and credentials.
 - Ingredient runtime remains deferred/quarantined; do not market ingredient management as stable.
 - Backend default branch metadata appears inconsistent because `origin/HEAD` points to `origin/admin-api-categories`.
-- Schema tightening depends on existing production data being clean enough for non-null and unique constraints.
+- Schema tightening depends on existing release-candidate data being clean enough for non-null and unique constraints.
 
 ## Recommended Merge Order
 

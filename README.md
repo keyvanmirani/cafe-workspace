@@ -7,6 +7,12 @@ This workspace contains the four surfaces used for the Cafe v1.5 release candida
 - `cafe-public`: Nuxt public menu app.
 - `api-tests/Cafe Headless WP API`: Bruno collection for API smoke and regression checks.
 
-The current architecture is branch-first. Branch workspace CRUD creates and edits branch-owned categories, items, and variants. Public branch menu reads prefer those branch-owned rows. The backend intentionally keeps the legacy global menu and `branch_items` fallback path for compatibility, audit, and rollback during the v1.5 candidate.
+The current architecture is branch-first. Branch workspace CRUD creates and edits branch-owned categories, items, ingredients, and variants. Public branch menu reads branch-owned rows through the v1.5 REST contracts.
 
-For the current release-candidate audit, see [RELEASE_CANDIDATE_1_5_AUDIT_2026_05.md](./RELEASE_CANDIDATE_1_5_AUDIT_2026_05.md).
+Useful current docs:
+
+- [Release hardening checklist](./RELEASE_HARDENING_2026_05_24.md)
+- [Manual smoke checklist](./RC_1_5_MANUAL_SMOKE_TEST.md)
+- [Admin setup](./apps/cafe-admin/README.md)
+- [Public setup](./apps/cafe-public/README.md)
+- [Backend setup](./apps/cafe-headless-wp/README.md)
