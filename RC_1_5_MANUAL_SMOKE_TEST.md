@@ -15,6 +15,7 @@ Rules for this smoke pass:
 - Do not redesign UI during smoke testing.
 - Do not introduce inventory, stock, orders, payments, checkout, accounting, or ERP logic.
 - Use a disposable or release-candidate-safe WordPress database.
+- Live WordPress validation must be run manually on the developer machine where WP Studio is running. Codex static, source, and build validation can pass without proving that the WP Studio WordPress instance, local HTTPS certificate, REST routes, or live database are reachable.
 - Record every failure with exact route, request, screen, branch, category, item, and variant where applicable.
 
 For each item, fill:
@@ -39,6 +40,104 @@ For each item, fill:
 - Variable item ID:
 - Variant ID:
 - Ingredient ID:
+
+## WP Studio Live Validation
+
+Run this section manually on the developer machine that has the WP Studio site running. Replace the sample values with the actual WP Studio site URL and an active branch slug from that site.
+
+```sh
+export WP_STUDIO_SITE_URL="https://cafeapi.wp.local"
+export RC_BRANCH_SLUG="mehrvila"
+```
+
+The `WP_STUDIO_SITE_URL` value is the WordPress site origin only. Do not include `/wp-json/cafe/v1` in that variable.
+
+### Site And Public REST Checks
+
+- [ ] Confirm the WP Studio site URL opens and returns an HTTP response.
+
+```sh
+curl -I "$WP_STUDIO_SITE_URL"
+```
+
+- [ ] Confirm the Cafe health endpoint returns HTTP 200 and a healthy JSON response.
+
+```sh
+curl -fsS "$WP_STUDIO_SITE_URL/wp-json/cafe/v1/health"
+```
+
+- [ ] Confirm public branches return HTTP 200 and include the branch intended for RC validation.
+
+```sh
+curl -fsS "$WP_STUDIO_SITE_URL/wp-json/cafe/v1/branches"
+```
+
+- [ ] Confirm the branch menu endpoint returns branch-scoped menu data.
+
+```sh
+curl -fsS "$WP_STUDIO_SITE_URL/wp-json/cafe/v1/menu?branch=$RC_BRANCH_SLUG"
+```
+
+- [ ] Confirm the branch tiles endpoint returns branch-scoped tile data.
+
+```sh
+curl -fsS "$WP_STUDIO_SITE_URL/wp-json/cafe/v1/tiles?branch=$RC_BRANCH_SLUG"
+```
+
+### Public App API Base URL And Image Audit
+
+- [ ] Confirm the public app environment points at the WP Studio Cafe API base URL.
+
+```sh
+cd apps/cafe-public
+printf '%s\n' "$NUXT_WORDPRESS_API_BASE_URL"
+test "$NUXT_WORDPRESS_API_BASE_URL" = "$WP_STUDIO_SITE_URL/wp-json/cafe/v1"
+```
+
+If `NUXT_WORDPRESS_API_BASE_URL` is not exported in the shell, set it before running local public validation:
+
+```sh
+export NUXT_WORDPRESS_API_BASE_URL="$WP_STUDIO_SITE_URL/wp-json/cafe/v1"
+```
+
+- [ ] Run the RC image audit against the WP Studio public API.
+
+```sh
+cd apps/cafe-public
+NUXT_WORDPRESS_API_BASE_URL="$WP_STUDIO_SITE_URL/wp-json/cafe/v1" pnpm run audit:images:rc
+```
+
+### Optional Backend Live Smoke
+
+Run this only when a disposable or release-candidate-safe WP Studio database is available and credentials are available. The smoke runner writes live branch, category, and item data and then attempts cleanup.
+
+```sh
+cd apps/cafe-headless-wp
+CAFE_BACKEND_INTEGRATION_SMOKE=1 \
+CAFE_API_BASE_URL="$WP_STUDIO_SITE_URL" \
+CAFE_API_USERNAME="admin" \
+CAFE_API_PASSWORD="application-password-or-test-password" \
+node tests/integration-smoke.test.mjs
+```
+
+Skip this command when any required credential or environment value is unavailable, and record the reason in the smoke notes.
+
+### Optional Bruno Manual Run
+
+Use this only if Bruno is installed and the local environment is configured with the WP Studio site URL and RC IDs/slugs.
+
+```sh
+cd tools/cafe-api-bruno
+bru run --env "Local WordPress API"
+```
+
+At minimum, the Bruno environment should set:
+
+- `baseUrl`: WP Studio site origin, for example `https://cafeapi.wp.local`
+- `username`: WordPress user for authenticated admin requests
+- `password`: WordPress application password or test password
+- `branchSlug`: active branch slug used for public menu and tiles requests
+- `branchId`, `categoryId`, `itemId`, `variantId`, and `ingredientId` when running admin or mutation requests
 
 ## Backend/API
 
