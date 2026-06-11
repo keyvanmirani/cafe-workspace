@@ -590,25 +590,54 @@ Cleanup requests, if run against disposable data only:
 
 ## Release Decision
 
-- Can tag `v1.5.0-rc.1`?
-  - Status:
-  - Notes:
-  - Screenshot needed:
-- Blocking issues:
-  - Status:
-  - Notes:
-  - Screenshot needed:
-- Non-blocking polish:
-  - Status:
-  - Notes:
-  - Screenshot needed:
-- Follow-up after RC:
-  - Status:
-  - Notes:
-  - Screenshot needed:
+### Final RC Readiness Summary - `v1.5.0-rc.3`
 
-Decision owner:
+Decision date: 2026-06-12
 
-Decision date:
+Readiness: 96%
 
-Final decision:
+Final decision: `v1.5.0-rc.3` can be tagged.
+
+What passed:
+
+- Public frontend: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test:unit`, `pnpm run build`, and `pnpm run test:smoke`.
+- Admin frontend: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test:unit`, and `pnpm run build`.
+- Backend plugin: PHP syntax scan passed for all plugin PHP files.
+- Backend source contracts: `node --test tests/*.test.mjs` passed all 13 source contract tests; credentialed integration smoke remained skipped by its own environment guard.
+- Public image audit: manual WP Studio image audit result is PASS.
+
+Intentionally manual or skipped:
+
+- WP Studio live validation from Codex: manual by design because Codex static/build validation does not prove the local WP Studio site, certificate, REST routes, or live database are reachable.
+- Bruno runtime validation: skipped because the `bru` CLI is unavailable in this shell.
+- Backend live smoke: skipped unless WP Studio credentials and a disposable or RC-safe database are provided.
+
+Database decision:
+
+- `wordpress.sql` is reference-only.
+- The canonical v1.5 schema is plugin activation/source.
+- `wordpress.sql` is not a `v1.5.0-rc.3` blocker.
+
+Remaining non-blockers:
+
+- Bruno CLI runtime validation when `bru` is available.
+- Live backend smoke when credentials are available.
+- Font resolution warnings in Nuxt builds, if still present at release time.
+
+Suggested tag/commit commands:
+
+```sh
+git add RC_1_5_MANUAL_SMOKE_TEST.md
+git commit -m "docs: record v1.5 rc3 readiness"
+git tag -a v1.5.0-rc.3 -m "Cafe Ecosystem v1.5.0-rc.3"
+git push origin HEAD
+git push origin v1.5.0-rc.3
+```
+
+Short release notes draft:
+
+- Cafe Ecosystem `v1.5.0-rc.3` locks the branch-first v1.5 release candidate across public menu, admin workspace, WordPress backend plugin, and Bruno API collection.
+- Public and admin Nuxt apps pass lint, typecheck, unit, and production build gates; public smoke passes after localhost binding is available.
+- Backend PHP syntax and source contract tests pass; credentialed live backend smoke remains optional/manual for WP Studio environments.
+- Public image audit passed manually against WP Studio.
+- `wordpress.sql` remains a reference snapshot only; plugin activation/source remains canonical for schema.
